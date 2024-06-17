@@ -12,7 +12,7 @@ public class Poster {
     }
 
     public String getUrl() {
-        return url;
+            return url;
     }
 
     @Override

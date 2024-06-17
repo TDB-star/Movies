@@ -11,7 +11,7 @@ public class Rating {
         this.kp = rating;
     }
 
-    public String getRating() {
+    public String getKp() {
         return kp;
     }
 
