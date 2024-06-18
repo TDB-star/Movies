@@ -26,6 +26,7 @@ public class MainViewModel extends AndroidViewModel {
 
     public MainViewModel(@NonNull Application application) {
         super(application);
+        loadMovies();
     }
 
     public LiveData<List<Movie>> getMovies() {
@@ -37,6 +38,10 @@ public class MainViewModel extends AndroidViewModel {
     }
 
     public void loadMovies() {
+        Boolean loading = isLoading.getValue();
+        if(loading != null && loading) {
+            return;
+        }
         Disposable disposable = ApiFactory.apiService.loadMovies(page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
