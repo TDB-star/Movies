@@ -55,7 +55,6 @@ public class MovieDetailActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<Trailer> trailers) {
                 trailersAdapter.setTrailers(trailers);
-                Log.d("MovieDetailActivity", trailers.toString());
             }
         });
 
@@ -67,6 +66,17 @@ public class MovieDetailActivity extends AppCompatActivity {
                startActivity(intent);
             }
         });
+
+        ApiFactory.apiService.loadReviews(movie.getId())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<ReviewResponse>() {
+                    @Override
+                    public void accept(ReviewResponse reviewResponse) throws Throwable {
+                        Log.d("MovieDetailActivity", reviewResponse.toString());
+                    }
+                });
+
 
     }
 
