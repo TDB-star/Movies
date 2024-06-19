@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TrailersAdapter  extends RecyclerView.Adapter<TrailersAdapter.TrailersViewsHolder>{
+public class TrailersAdapter extends RecyclerView.Adapter<TrailersAdapter.TrailersViewsHolder>{
 
     private List<Trailer> trailers = new ArrayList<>();
     private onTrailerClickListener onTrailerClickListener;

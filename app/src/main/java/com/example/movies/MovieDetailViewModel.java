@@ -21,10 +21,15 @@ public class MovieDetailViewModel extends AndroidViewModel {
 
     private final MutableLiveData<List<Trailer>> trailers = new MutableLiveData<>();
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private final MutableLiveData<List<Review>> reviews = new MutableLiveData<>();
 
 
     public LiveData<List<Trailer>> getTrailers() {
         return trailers;
+    }
+
+    public MutableLiveData<List<Review>> getReviews() {
+        return reviews;
     }
 
     public MovieDetailViewModel(@NonNull Application application) {
@@ -54,6 +59,24 @@ public class MovieDetailViewModel extends AndroidViewModel {
                     }
                 });
          compositeDisposable.add(disposable);
+    }
+
+    public void loadReviews(int id) {
+        Disposable disposable = ApiFactory.apiService.loadReviews(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<ReviewResponse>() {
+                    @Override
+                    public void accept(ReviewResponse reviewResponse) throws Throwable {
+                        reviews.setValue(reviewResponse.getReviewliste());
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Throwable {
+
+                    }
+                });
+        compositeDisposable.add(disposable);
     }
 
     @Override

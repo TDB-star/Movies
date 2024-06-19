@@ -29,7 +29,9 @@ public class MovieDetailActivity extends AppCompatActivity {
     private TextView textViewDescription;
     private MovieDetailViewModel viewModel;
     private RecyclerView recyclerViewTrailers;
+    private RecyclerView recyclerViewReviews;
     private TrailersAdapter trailersAdapter;
+    private ReviewsAdapter reviewsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,8 @@ public class MovieDetailActivity extends AppCompatActivity {
         viewModel = new ViewModelProvider(this).get(MovieDetailViewModel.class);
         trailersAdapter = new TrailersAdapter();
 
+        reviewsAdapter = new ReviewsAdapter();
+        recyclerViewReviews.setAdapter(reviewsAdapter);
         recyclerViewTrailers.setAdapter(trailersAdapter);
 
         Glide.with(this)
@@ -66,18 +70,14 @@ public class MovieDetailActivity extends AppCompatActivity {
                startActivity(intent);
             }
         });
+        viewModel.loadReviews(movie.getId());
 
-        ApiFactory.apiService.loadReviews(movie.getId())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<ReviewResponse>() {
-                    @Override
-                    public void accept(ReviewResponse reviewResponse) throws Throwable {
-                        Log.d("MovieDetailActivity", reviewResponse.toString());
-                    }
-                });
-
-
+        viewModel.getReviews().observe(this, new Observer<List<Review>>() {
+            @Override
+            public void onChanged(List<Review> reviews) {
+                reviewsAdapter.setReviews(reviews);
+            }
+        });
     }
 
     private void initViews() {
@@ -86,6 +86,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         textViewYear = findViewById(R.id.textViewYear);
         textViewDescription = findViewById(R.id.textViewDescription);
         recyclerViewTrailers = findViewById(R.id.recyclerViewTrailers);
+        recyclerViewReviews = findViewById(R.id.recyclerViewReviews);
     }
 
     public static Intent newIntent(Context context, Movie movie) {
