@@ -29,6 +29,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Intent intent = FavoriteMoviesActivity.newIntent(this);
+        startActivity(intent);
+
         viewModel = new ViewModelProvider(this).get(MainViewModel.class);
         recyclerViewMovies = findViewById(R.id.recyclerViewMovies);
         progressBarLoading = findViewById(R.id.progressBarLoading);
