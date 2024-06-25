@@ -1,7 +1,5 @@
 package com.example.movies;
-
 import androidx.room.TypeConverter;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -43,7 +41,7 @@ public class Converters {
             return null;
         }
         Gson gson = new Gson();
-        Type type = new TypeToken<Poster>() {}.getType();
+        Type type = new TypeToken<Rating>() {}.getType();
         return gson.fromJson(ratingString, type);
     }
 }
